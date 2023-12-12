@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 
 const API_KEY = process.env.NEXT_PUBLIC_GC_API_KEY;
-const SCORER_ID = parseInt(process.env.NEXT_PUBLIC_GC_SCORER_ID as string);
+const SCORER_ID = process.env.NEXT_PUBLIC_GC_SCORER_ID;
 const SIGNING_MESSAGE_URI = "/api/gitcoin/registry/signing-message";
 const SUBMIT_PASSPORT_URI = "/api/gitcoin/registry/submit-passport";
 const headers = API_KEY
@@ -49,7 +49,6 @@ function Gitpass() {
 
     const { message, nonce } = await getSigningMessage();
     const signature = signMessage({ message });
-
     try {
       const response = await fetch(SUBMIT_PASSPORT_URI, {
         method: "POST",
