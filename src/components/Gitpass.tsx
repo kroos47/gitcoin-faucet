@@ -2,7 +2,6 @@ import { useAccount, useSignMessage } from "wagmi";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { flushSync } from "react-dom";
-
 const API_KEY = process.env.NEXT_PUBLIC_GC_API_KEY;
 const SCORER_ID = process.env.NEXT_PUBLIC_GC_SCORER_ID;
 const SIGNING_MESSAGE_URI = "/api/gitcoin/registry/signing-message";
@@ -129,5 +128,4 @@ function Gitpass() {
     </>
   );
 }
-
 export default Gitpass;
