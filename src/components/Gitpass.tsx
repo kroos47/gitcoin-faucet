@@ -1,6 +1,7 @@
 import { useAccount, useSignMessage } from "wagmi";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
+import { flushSync } from "react-dom";
 
 const API_KEY = process.env.NEXT_PUBLIC_GC_API_KEY;
 const SCORER_ID = process.env.NEXT_PUBLIC_GC_SCORER_ID;
@@ -27,10 +28,11 @@ async function getSigningMessage() {
 
 function Gitpass() {
   const { address, isConnected } = useAccount();
-  const { signMessage } = useSignMessage();
   const [isLoading, setLoading] = useState(false);
+  const [isScoreLoading, setScoreLoading] = useState(false);
   const [score, setScore] = useState<string>("");
-  const [noScoreMessage, setNoScoreMessage] = useState<string>("");
+  //   const [noScoreMessage, setNoScoreMessage] = useState<string>("");
+  const { data, signMessage, isError, isSuccess } = useSignMessage();
 
   //   useEffect(() => {
   //     if (isConnected) {
@@ -48,20 +50,20 @@ function Gitpass() {
       : undefined;
 
     const { message, nonce } = await getSigningMessage();
-    const signature = signMessage({ message });
+    signMessage({ message });
     try {
       const response = await fetch(SUBMIT_PASSPORT_URI, {
         method: "POST",
         headers,
-        body: JSON.stringify({ address, scorer: SCORER_ID, signature, nonce }),
+        body: JSON.stringify({ address, scorer_id: SCORER_ID, data, nonce }),
       });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const data = await response.json();
-      console.log("data:", data);
+      const res_data = await response.json();
+      console.log("data:", res_data);
     } catch (err) {
       console.error("Error submitting passport: ", err);
     }
@@ -69,6 +71,7 @@ function Gitpass() {
   }
 
   async function getScore() {
+    setScoreLoading(true);
     setScore("");
     const GET_PASSPORT_SCORE_URI = `/api/gitcoin/registry/score/${SCORER_ID}/${address}`;
     try {
@@ -86,13 +89,14 @@ function Gitpass() {
         console.log(
           "No score available, please add Stamps to your passport and then resubmit."
         );
-        setNoScoreMessage(
+        setScore(
           "No score available, please submit your passport after you have added some stamps."
         );
       }
     } catch (err) {
       console.log("error: ", err);
     }
+    setScoreLoading(false);
   }
 
   if (!isConnected) return <></>;
@@ -118,9 +122,10 @@ function Gitpass() {
       <Button onClick={submitPassport} disabled={isLoading}>
         {isLoading ? "Submitting..." : "Submit Passport"}
       </Button>
-      <Button onClick={getScore} disabled={isLoading}>
-        {isLoading ? "Checking..." : "checking passport"}
+      <Button onClick={getScore} disabled={isScoreLoading}>
+        {isScoreLoading ? "Checking..." : "check passport"}
       </Button>
+      {score && <p>Passport Score {score}</p>}
     </>
   );
 }

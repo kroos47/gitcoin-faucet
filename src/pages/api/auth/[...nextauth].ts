@@ -62,6 +62,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
           )
 
           if (result.success) {
+            console.log("you good bowi")
             return {
               id: `eip155:${siwe.chainId}:${siwe.address}`
             }
