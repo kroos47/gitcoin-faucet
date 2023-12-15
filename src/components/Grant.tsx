@@ -10,7 +10,7 @@ export default function Grant() {
       await GrantRole(session.discordUserId);
     }
   };
-  if (!session) {
+  if (session) {
     return (
       <div className="flex gap-4">
         <Button onClick={() => handleGrantClick()}>Give Role</Button>

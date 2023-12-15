@@ -1,6 +1,5 @@
 import "@/styles/global.css";
 import { createWeb3Modal, defaultWagmiConfig } from "@web3modal/wagmi/react";
-import { Web3Modal } from "../context/Web3Modal";
 
 import { WagmiConfig } from "wagmi";
 import type { AppProps } from "next/app";

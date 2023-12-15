@@ -11,6 +11,10 @@ const nextConfig = {
         source: "/api/gitcoin/:path*",
         destination: "https://api.scorer.gitcoin.co/:path*",
       },
+      {
+		source: "/api/discord/:path*",
+		destination: "https://discordapp.com/api/guilds/:path*",
+	  },
     ];
   },
 };

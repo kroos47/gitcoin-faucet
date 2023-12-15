@@ -5,12 +5,10 @@ function Account() {
   const { address, isConnecting, isDisconnected } = useAccount();
 
   if (isConnecting) return <div>Connecting…</div>;
-  if (isDisconnected) return <div>Disconnected</div>;
+  if(address)
   return (
     <div className="flex gap-4">
-      <span>
-        <Badge>Connected</Badge>
-      </span>
+ 
       <span className="text-grey-400">{address}</span>
     </div>
   );

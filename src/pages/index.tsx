@@ -8,16 +8,23 @@ import Gitpass from "@/components/Gitpass";
 import SignIn from "@/components/SignIn";
 import Grant from "@/components/Grant";
 import DiscodAcc from "@/components/DiscordAcc";
+import { useAccount } from "wagmi";
+import { useSession } from "next-auth/react";
 
 export default function Home() {
   const [isNetworkSwitchHighlighted, setIsNetworkSwitchHighlighted] =
     useState(false);
   const [isConnectHighlighted, setIsConnectHighlighted] = useState(false);
 
+  const { address } = useAccount();
+
+  const { data: session } = useSession();
+
   const closeAll = () => {
     setIsNetworkSwitchHighlighted(false);
     setIsConnectHighlighted(false);
   };
+  const score = 2;
   //TODO: Fix Grant Role Button CallBack.
   //TODO: Fix UI
   return (
@@ -31,13 +38,13 @@ export default function Home() {
       <main className="grid min-h-screen items-center">
         <div className="flex items-center flex-col gap-12">
           <h1 className="text-3xl font-bold">Avail Gitcoin</h1>
-
           <ConnectButton />
-          <Account></Account>
-          <Gitpass></Gitpass>
-          <SignIn></SignIn>
-          <Grant></Grant>
-          <DiscodAcc></DiscodAcc>
+          {/* <Account></Account> */}
+          {address && <SignIn></SignIn>}
+          {address && session && <Gitpass></Gitpass>}
+          {/* <DiscodAcc></DiscodAcc> */}
+          {score > 1 && <Grant></Grant>}{" "}
+          {/* Conditional rendering based on score */}
         </div>
       </main>
     </>
