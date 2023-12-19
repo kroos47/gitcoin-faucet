@@ -1,20 +1,19 @@
 import ConnectButton from "@/components/ConnectButton";
-import Sign from "@/components/Sign";
-import Account from "@/components/Account";
 import Head from "next/head";
 import Image from "next/image";
 import { useState } from "react";
 import Gitpass from "@/components/Gitpass";
 import SignIn from "@/components/SignIn";
 import Grant from "@/components/Grant";
-import DiscodAcc from "@/components/DiscordAcc";
 import { useAccount } from "wagmi";
 import { useSession } from "next-auth/react";
+import Nav from "@/components/Nav";
 
 export default function Home() {
   const [isNetworkSwitchHighlighted, setIsNetworkSwitchHighlighted] =
     useState(false);
   const [isConnectHighlighted, setIsConnectHighlighted] = useState(false);
+  const [score, setScore] = useState<number>(0);
 
   const { address } = useAccount();
 
@@ -24,7 +23,7 @@ export default function Home() {
     setIsNetworkSwitchHighlighted(false);
     setIsConnectHighlighted(false);
   };
-  const score = 2;
+
   //TODO: Fix Grant Role Button CallBack.
   //TODO: Fix UI
   return (
@@ -35,15 +34,18 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Nav />
       <main className="grid min-h-screen items-center">
         <div className="flex items-center flex-col gap-12">
           <h1 className="text-3xl font-bold">Avail Gitcoin</h1>
           <ConnectButton />
           {/* <Account></Account> */}
           {address && <SignIn></SignIn>}
-          {address && session && <Gitpass></Gitpass>}
+          {address && session && (
+            <Gitpass score={score} setScore={setScore}></Gitpass>
+          )}
           {/* <DiscodAcc></DiscodAcc> */}
-          {score > 1 && <Grant></Grant>}{" "}
+          {score > 1 && <Grant score={score} setScore={setScore}></Grant>}{" "}
           {/* Conditional rendering based on score */}
         </div>
       </main>

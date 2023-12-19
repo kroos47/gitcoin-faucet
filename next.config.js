@@ -12,9 +12,9 @@ const nextConfig = {
         destination: "https://api.scorer.gitcoin.co/:path*",
       },
       {
-		source: "/api/discord/:path*",
-		destination: "https://discordapp.com/api/guilds/:path*",
-	  },
+        source: "/access/discord/:path*",
+        destination: "https://discord.com/api/guilds/:path*",
+      },
     ];
   },
 };

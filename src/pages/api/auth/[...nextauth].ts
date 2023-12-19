@@ -33,7 +33,6 @@ declare module "next-auth/jwt" {
  * For more information on each option (and a full list of options) go to
  * https://next-auth.js.org/configuration/options
  */
-
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {
   const nextAuthSecret = process.env["NEXTAUTH_SECRET"];
   if (!nextAuthSecret) {
@@ -65,17 +64,12 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
           if (!credentials?.message) {
             throw new Error("SiweMessage is undefined");
           }
-          const siwe = new SiweMessage(
-            JSON.parse(credentials?.message || "{}")
-          );
+          const siwe = new SiweMessage(credentials.message);
           const provider = new ethers.JsonRpcProvider(
             `https://rpc.walletconnect.com/v1?chainId=eip155:${siwe.chainId}&projectId=${projectId}`
           );
+          console.log(provider);
           const nonce = await getCsrfToken({ req: { headers: req.headers } });
-          if (siwe.nonce !== (await getCsrfToken({ req }))) {
-            console.log("failed");
-            return null;
-          }
           const result = await siwe.verify(
             {
               signature: credentials?.signature || "",
@@ -110,6 +104,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
   if (isDefaultSigninPage) {
     providers.pop();
   }
+
   return await nextAuth(req, res, {
     // https://next-auth.js.org/configuration/providers/oauth
     secret: nextAuthSecret,

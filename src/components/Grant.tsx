@@ -1,15 +1,24 @@
 import { useSession, signIn, signOut } from "next-auth/react";
-import { useAccount } from "wagmi";
 import { Button } from "./ui/button";
-import GrantRole from "./GrantRole";
-export default function Grant() {
-  const { address, isConnected } = useAccount();
+import useGrantRole from "../hooks/useGrantRole";
+
+type Props = {
+  score: number;
+  setScore: (v: number) => void;
+};
+
+export default function Grant({ score, setScore }: Props) {
   const { data: session } = useSession();
+  // console.log(session?.address);
+
+  const { grant } = useGrantRole(session?.discordUserId || "");
+
   const handleGrantClick = async () => {
     if (session?.discordUserId) {
-      await GrantRole(session.discordUserId);
+      await grant(score);
     }
   };
+
   if (session) {
     return (
       <div className="flex gap-4">
