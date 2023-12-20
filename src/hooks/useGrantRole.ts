@@ -5,24 +5,23 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { useRouter } from "next/router";
 
 export default function useGrantRole(userId: string) {
-  const discordServerId = "1095316600716013589";
-  const roleId = "1186272423717384232";
+  const DISCORD_SERVER_ID = process.env.NEXT_PUBLIC_DISCORD_SERVER_ID;
+  const ROLE_ID = process.env.NEXT_PUBLIC_ROLE_ID;
   const ROLE_DISCORD_URL = `/api/discord-role`;
   const router = useRouter();
-
   async function grant(score: number) {
     if (score > 1) {
+      console.log(process.env, process.env.NEXT_PUBLIC_BOT_TOKEN);
+      console.log(ROLE_ID);
+
       try {
         const response = await fetch(ROLE_DISCORD_URL, {
           method: "POST",
           body: JSON.stringify({
-            serverId: discordServerId,
+            serverId: DISCORD_SERVER_ID,
             userId,
-            roleId,
+            roleId: ROLE_ID,
           }),
-          headers: {
-            Authorization: `Bot ${process.env.NEXT_PUBLIC_BOT_TOKEN}`,
-          },
         });
 
         if (response.ok) {

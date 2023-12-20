@@ -89,7 +89,7 @@ const siweConfig = createSIWEConfig({
 
 const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata });
 
-const Test = createWeb3Modal({ siweConfig, wagmiConfig, projectId, chains });
+createWeb3Modal({ siweConfig, wagmiConfig, projectId, chains });
 
 interface Props {
   children: ReactNode;

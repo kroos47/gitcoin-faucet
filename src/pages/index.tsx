@@ -37,7 +37,7 @@ export default function Home() {
       <Nav />
       <main className="grid min-h-screen items-center">
         <div className="flex items-center flex-col gap-12">
-          <h1 className="text-3xl font-bold">Avail Gitcoin</h1>
+          <h1 className="text-3xl font-bold">Avail Faucet Verification</h1>
           <ConnectButton />
           {/* <Account></Account> */}
           {address && <SignIn></SignIn>}
