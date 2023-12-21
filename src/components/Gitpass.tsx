@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { flushSync } from "react-dom";
 import toast from "react-hot-toast";
+import { useRouter } from "next/router";
 const API_KEY = process.env.NEXT_PUBLIC_GC_API_KEY;
 const SCORER_ID = process.env.NEXT_PUBLIC_GC_SCORER_ID;
 const SIGNING_MESSAGE_URI = "/api/gitcoin/registry/signing-message";
@@ -34,6 +35,7 @@ type Props = {
 function Gitpass({ score, setScore }: Props) {
   const { address, isConnected } = useAccount();
   const [isLoading, setLoading] = useState(false);
+  const router = useRouter();
 
   //   const [noScoreMessage, setNoScoreMessage] = useState<string>("");
   const { data, signMessage, isError, isSuccess } = useSignMessage();
@@ -69,9 +71,10 @@ function Gitpass({ score, setScore }: Props) {
       const res_data = await response.json();
       console.log("data:", res_data);
       setScore(res_data.score);
-      if (res_data.score > 1) {
+      if (res_data.score > 20) {
         toast.success("Succesfully Submitted");
       } else {
+        router.push("failure");
         toast.error("Lesser than threshold");
       }
     } catch (err) {
@@ -85,9 +88,13 @@ function Gitpass({ score, setScore }: Props) {
 
   return (
     <>
+      <Button onClick={submitPassport} disabled={isLoading}>
+        {isLoading ? "Submitting..." : "Submit Gitcoin Passport"}
+      </Button>
+      {score > 0 && <p>Passport Score {score}</p>}
       <div className="text-center">
         <p className="text-base text-gray-700 mb-4">
-          Configure your passport:
+          Don't have a passport? Create one or configure it&nbsp;
           <a
             className="text-blue-600 hover:text-blue-800 visited:text-purple-600"
             target="_blank"
@@ -96,15 +103,7 @@ function Gitpass({ score, setScore }: Props) {
             here
           </a>
         </p>
-        <p className="text-base text-gray-700">
-          Once you've added more stamps to your passport, submit your passport
-          again to recalculate your score.
-        </p>
       </div>
-      <Button onClick={submitPassport} disabled={isLoading}>
-        {isLoading ? "Submitting..." : "Submit Passport"}
-      </Button>
-      {score > 0 && <p>Passport Score {score}</p>}
     </>
   );
 }

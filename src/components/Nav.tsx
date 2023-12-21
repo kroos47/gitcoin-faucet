@@ -1,6 +1,6 @@
 import { useWeb3Modal } from "@web3modal/wagmi/react";
 import { signOut, useSession } from "next-auth/react";
-import { useAccount } from "wagmi";
+import { useAccount, useDisconnect } from "wagmi";
 
 const truncate = (str: string) => {
   if (str.length < 35) return str;
@@ -36,8 +36,9 @@ const DiscordIcon = () => (
 
 export default function Nav() {
   const { address } = useAccount();
-  const { open } = useWeb3Modal();
+  const { open, close } = useWeb3Modal();
   const { data: session } = useSession();
+  const { disconnect } = useDisconnect();
 
   return (
     <nav className="flex justify-end w-full py-4 px-6 gap-6">
@@ -58,7 +59,10 @@ export default function Nav() {
           <div className="flex gap-4">
             <button
               className="bg-gray-900 border border-gray-700 p-[2px] pr-3 rounded-full text-xs flex gap-2 items-center"
-              onClick={() => signOut()}
+              onClick={() => {
+                signOut();
+                disconnect();
+              }}
             >
               <span className="border border-gray-600 bg-black rounded-full p-[6px]">
                 <DiscordIcon />

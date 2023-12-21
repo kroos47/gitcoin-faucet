@@ -37,7 +37,9 @@ export default function Home() {
       <Nav />
       <main className="grid min-h-screen items-center">
         <div className="flex items-center flex-col gap-12">
-          <h1 className="text-3xl font-bold">Avail Faucet Verification</h1>
+          <h1 className="text-3xl font-bold">
+            Avail Clash of Nodes Verification
+          </h1>
           <ConnectButton />
           {/* <Account></Account> */}
           {address && <SignIn></SignIn>}
@@ -45,7 +47,7 @@ export default function Home() {
             <Gitpass score={score} setScore={setScore}></Gitpass>
           )}
           {/* <DiscodAcc></DiscodAcc> */}
-          {score > 1 && <Grant score={score} setScore={setScore}></Grant>}{" "}
+          {score > 20 && <Grant score={score} setScore={setScore}></Grant>}{" "}
           {/* Conditional rendering based on score */}
         </div>
       </main>

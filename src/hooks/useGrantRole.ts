@@ -10,10 +10,7 @@ export default function useGrantRole(userId: string) {
   const ROLE_DISCORD_URL = `/api/discord-role`;
   const router = useRouter();
   async function grant(score: number) {
-    if (score > 1) {
-      console.log(process.env, process.env.NEXT_PUBLIC_BOT_TOKEN);
-      console.log(ROLE_ID);
-
+    if (score > 20) {
       try {
         const response = await fetch(ROLE_DISCORD_URL, {
           method: "POST",

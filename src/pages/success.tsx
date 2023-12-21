@@ -22,14 +22,14 @@ const Success = () => {
 
           <h1 className="text-3xl text-center mt-4 mb-1">Congratulations</h1>
           <p className="text-gray-600 mb-2">You may close this window now</p>
-          <Button
+          {/* <Button
             onClick={() => {
               router.push("/");
             }}
             variant={"ghost"}
           >
             Go Back
-          </Button>
+          </Button> */}
         </div>
       </div>
     </main>
